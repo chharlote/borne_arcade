@@ -9,7 +9,7 @@ import MG2D.Clavier;
 import MG2D.audio.*;
 import java.io.File;
 import MG2D.geometrie.Texte;
-import MG2D.Couleur;
+import MG2D.geometrie.Couleur;
 
 
 public class BoiteSelection extends Boite{
