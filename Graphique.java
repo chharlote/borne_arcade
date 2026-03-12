@@ -1,7 +1,11 @@
 import MG2D.*;
 import MG2D.audio.*;
-import MG2D.geometrie.*;
 import MG2D.geometrie.Point;
+import MG2D.geometrie.Rectangle;
+import MG2D.geometrie.Texture;
+import MG2D.geometrie.Couleur;
+import MG2D.geometrie.Ligne;
+import MG2D.geometrie.Texte;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
@@ -67,12 +71,12 @@ public class Graphique {
 	
 	Bouton.remplirBouton();
 	pointeur = new Pointeur();
-	bs = new BoiteSelection(new Rectangle(Couleur .GRIS_CLAIR, new Point(0, 0), new Point(640, TAILLEY), true), pointeur);
+	bs = new BoiteSelection(new Rectangle(Couleur.GRIS_CLAIR, new Point(0, 0), new Point(640, TAILLEY), true), pointeur);
 	//f.ajouter(bs.getRectangle());
 	//System.out.println(tableau[pointeur.getValue()].getChemin());
-	bi = new BoiteImage(new Rectangle(Couleur .GRIS_FONCE, new Point(640, 512), new Point(TAILLEX, TAILLEY), true), new String(tableau[pointeur.getValue()].getChemin()));
+	bi = new BoiteImage(new Rectangle(Couleur.GRIS_FONCE, new Point(640, 512), new Point(TAILLEX, TAILLEY), true), new String(tableau[pointeur.getValue()].getChemin()));
 	//f.ajouter(bi.getRectangle());
-	bd = new BoiteDescription(new Rectangle(Couleur .GRIS, new Point(640, 0), new Point(TAILLEX, 512), true));
+	bd = new BoiteDescription(new Rectangle(Couleur.GRIS, new Point(640, 0), new Point(TAILLEX, 512), true));
 	bd.lireFichier(tableau[pointeur.getValue()].getChemin());
 	bd.lireHighScore(tableau[pointeur.getValue()].getChemin());
 	//f.ajouter(bd.getRectangle());

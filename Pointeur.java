@@ -15,7 +15,7 @@ public class Pointeur {
 
     public Pointeur(){
 	this.triangleGauche = new Texture("img/star.png", new Point(30, 492), 40,40);
-	// this.triangleDroite = new Triangle(Couleur .ROUGE, new Point(550, 560), new Point(520, 510), new Point(550, 460), true);
+	// this.triangleDroite = new Triangle(Couleur.ROUGE, new Point(550, 560), new Point(520, 510), new Point(550, 460), true);
 	this.triangleDroite = new Texture("img/star.png", new Point(530, 492), 40,40);
 	this.rectangleCentre = new Texture("img/select2.png", new Point(80, 460), 440, 100);
 	this.value = Graphique.tableau.length-1;

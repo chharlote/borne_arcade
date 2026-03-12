@@ -70,17 +70,17 @@ public class BoiteDescription extends Boite{
 	}
 	
 	//declaration des textes bouton + joystick
-	this.tJoystick = new Texte(Couleur .NOIR, "...", font1, new Point(760, 80));
+	this.tJoystick = new Texte(Couleur.NOIR, "...", font1, new Point(760, 80));
 	for(int i = 0 ; i < 3 ; i++){
-	    this.tBouton[i] = new Texte(Couleur .NOIR, "...", font1, new Point(910+130*i, 120));
+	    this.tBouton[i] = new Texte(Couleur.NOIR, "...", font1, new Point(910+130*i, 120));
 	}
 	for(int i = 3 ; i < 6 ; i++){
-	    this.tBouton[i] = new Texte(Couleur .NOIR, "...", font1, new Point(910+130*(i-3), 40));
+	    this.tBouton[i] = new Texte(Couleur.NOIR, "...", font1, new Point(910+130*(i-3), 40));
 	}
 	stop = false;
 	message = new Texte[10];
 	for(int i = 0 ; i < message.length ; i++){
-	    message[i] = new Texte(Couleur .NOIR, "", font2, new Point(960, 590));
+	    message[i] = new Texte(Couleur.NOIR, "", font2, new Point(960, 590));
 	    message[i].translater(0, -i*30);
 
 	}
@@ -100,17 +100,17 @@ public class BoiteDescription extends Boite{
 	
 	
 	//declaration des textes bouton + joystick
-	this.tJoystick = new Texte(Couleur .NOIR, "...", new Font("Calibri", Font.TYPE1_FONT, 15), new Point(760, 80));
+	this.tJoystick = new Texte(Couleur.NOIR, "...", new Font("Calibri", Font.TYPE1_FONT, 15), new Point(760, 80));
 	for(int i = 0 ; i < 3 ; i++){
-	    this.tBouton[i] = new Texte(Couleur .NOIR, "...", new Font("Calibri", Font.TYPE1_FONT, 15), new Point(910+130*i, 120));
+	    this.tBouton[i] = new Texte(Couleur.NOIR, "...", new Font("Calibri", Font.TYPE1_FONT, 15), new Point(910+130*i, 120));
 	}
 	for(int i = 3 ; i < 6 ; i++){
-	    this.tBouton[i] = new Texte(Couleur .NOIR, "...", new Font("Calibri", Font.TYPE1_FONT, 15), new Point(910+130*(i-3), 40));
+	    this.tBouton[i] = new Texte(Couleur.NOIR, "...", new Font("Calibri", Font.TYPE1_FONT, 15), new Point(910+130*(i-3), 40));
 	}
 	stop = false;
 	message = new Texte[10];
 	for(int i = 0 ; i < message.length ; i++){
-	    message[i] = new Texte(Couleur .NOIR, "", new Font("Calibri", Font.TYPE1_FONT, 20), new Point(960, 590));
+	    message[i] = new Texte(Couleur.NOIR, "", new Font("Calibri", Font.TYPE1_FONT, 20), new Point(960, 590));
 	    message[i].translater(0, -i*30);
 
 	}
