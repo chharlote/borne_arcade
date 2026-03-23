@@ -3,7 +3,7 @@ import MG2D.audio.Bruitage;
 import MG2D.geometrie.*;
 import java.awt.Font;
 import java.util.Random;
-import MG2D.audio.*;
+import MG2D.audio.Musique;
 
 public class Jeu2048 {
 
@@ -340,7 +340,7 @@ public class Jeu2048 {
             Couleur.NOIR,
             "Score : " + score,
             new Font("Arial", Font.BOLD, 40),
-            new Point(1800, 1180)
+            new Point(largeur - 120, hauteur - 25)
         );
         f.ajouter(scoreText);
     }
