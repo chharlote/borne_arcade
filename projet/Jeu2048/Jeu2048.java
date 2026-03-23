@@ -340,7 +340,7 @@ public class Jeu2048 {
             Couleur.NOIR,
             "Score : " + score,
             new Font("Arial", Font.BOLD, 40),
-            new Point(largeur - 120, hauteur - 25)
+            new Point(largeur - 180, hauteur - 30)
         );
         f.ajouter(scoreText);
     }
