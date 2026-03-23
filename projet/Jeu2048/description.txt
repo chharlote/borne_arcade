@@ -1,3 +1,4 @@
-Jeu2048 - Chloé Faillie et CHarlotte Germe - 2026
+2048 - Chloé Faillie et CHarlotte Germe - 2026
 
-Clique sur les carrés au bon moment 
+Combinez les tuiles identiques pour 
+atteindre la tuile 2048 !

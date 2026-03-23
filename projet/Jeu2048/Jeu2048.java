@@ -9,8 +9,7 @@ public class Jeu2048 {
     private Random random = new Random();
     private int score = 0;
 
-    // 🎯 menu
-    private int choixMenu = 0; // 0 = restart, 1 = quitter
+    private int choixMenu = 0; 
 
     public Jeu2048() {
 
@@ -57,7 +56,6 @@ public class Jeu2048 {
         }
     }
 
-    // 🎮 MENU FIN
     private void afficherMenu(FenetrePleinEcran fenetre, ClavierBorneArcade clavier, boolean victoire) {
 
         choixMenu = 0;
@@ -66,63 +64,53 @@ public class Jeu2048 {
 
             fenetre.effacer();
 
-            // fond
-            Rectangle fond = new Rectangle(
-                victoire ? new Couleur(255,215,0) : new Couleur(50,50,50),
-                new Point(0,0),
-                fenetre.getWidth(),
-                fenetre.getHeight(),
-                true
-            );
-            fenetre.ajouter(fond);
+            int cx = fenetre.getWidth() / 2;
+            int cy = fenetre.getHeight() / 2;
 
-            // titre
             Texte titre = new Texte(
-                victoire ? Couleur.NOIR : Couleur.ROUGE,
+                victoire ? new Couleur(0, 150, 0) : Couleur.ROUGE,
                 victoire ? "VICTOIRE !" : "GAME OVER",
                 new Font("Arial", Font.BOLD, 80),
-                new Point(fenetre.getWidth()/2 - 250, fenetre.getHeight()/2 - 150)
+                new Point(cx, cy + 200) 
             );
 
             Texte scoreTxt = new Texte(
-                victoire ? Couleur.NOIR : Couleur.BLANC,
+                Couleur.NOIR, 
                 "Score : " + score,
                 new Font("Arial", Font.BOLD, 50),
-                new Point(fenetre.getWidth()/2 - 150, fenetre.getHeight()/2 - 50)
+                new Point(cx, cy + 100) 
             );
 
-            // positions boutons
-            int bx = fenetre.getWidth()/2 - 150;
-            int by1 = fenetre.getHeight()/2 + 50;
-            int by2 = fenetre.getHeight()/2 + 150;
+            int rectWidth = 300;
+            int rectHeight = 80;
+            int bx = cx - rectWidth / 2;
+            int by1 = cy - 30;  
+            int by2 = cy - 130; 
 
-            // 🔄 bouton restart
             Rectangle b1 = new Rectangle(
-                choixMenu == 0 ? Couleur.NOIR : Couleur.BLANC,
+                choixMenu == 0 ? new Couleur(238,228,218) : new Couleur(200,200,200),
                 new Point(bx, by1),
-                300, 80,
-                choixMenu == 0
+                rectWidth, rectHeight,
+                true
             );
-
             Texte t1 = new Texte(
-                choixMenu == 0 ? Couleur.BLANC : Couleur.NOIR,
+                Couleur.NOIR,
                 "RESTART",
                 new Font("Arial", Font.BOLD, 30),
-                new Point(bx + 80, by1 + 50)
+                new Point(cx, by1 + 25)
             );
 
             Rectangle b2 = new Rectangle(
-                choixMenu == 1 ? Couleur.NOIR : Couleur.BLANC,
+                choixMenu == 1 ? new Couleur(238,228,218) : new Couleur(200,200,200),
                 new Point(bx, by2),
-                300, 80,
-                choixMenu == 1
+                rectWidth, rectHeight,
+                true
             );
-
             Texte t2 = new Texte(
-                choixMenu == 1 ? Couleur.BLANC : Couleur.NOIR,
+                Couleur.NOIR,
                 "QUITTER",
                 new Font("Arial", Font.BOLD, 30),
-                new Point(bx + 80, by2 + 50)
+                new Point(cx, by2 + 25)
             );
 
             fenetre.ajouter(titre);
@@ -134,16 +122,13 @@ public class Jeu2048 {
 
             fenetre.rafraichir();
 
-            // 🎮 navigation
             if(clavier.getJoyJ1HautTape() || clavier.getJoyJ1BasTape()) {
-                choixMenu = 1 - choixMenu; // switch 0 <-> 1
+                choixMenu = 1 - choixMenu; 
             }
 
-            // 🎮 validation
-            if(clavier.getBoutonJ1ZTape()) {
+            if(clavier.getBoutonJ1ZTape() || clavier.getBoutonJ1ATape()) {
                 if(choixMenu == 0) {
-                    fenetre.fermer();
-                    new Jeu2048();
+                    return; 
                 } else {
                     System.exit(0);
                 }
