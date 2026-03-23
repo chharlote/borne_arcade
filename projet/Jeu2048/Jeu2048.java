@@ -7,6 +7,10 @@ public class Jeu2048 {
 
     private int[][] grille = new int[4][4];
     private Random random = new Random();
+    private int score = 0;
+
+    // 🎯 menu
+    private int choixMenu = 0; // 0 = restart, 1 = quitter
 
     public Jeu2048() {
 
@@ -15,8 +19,7 @@ public class Jeu2048 {
         ClavierBorneArcade clavier = new ClavierBorneArcade();
         fenetre.addKeyListener(clavier);
 
-        ajouterCase();
-        ajouterCase();
+        restart();
 
         while(true) {
 
@@ -36,20 +39,126 @@ public class Jeu2048 {
                 if(moveDown()) ajouterCase();
             }
 
-            if(clavier.getBoutonJ1ZTape()) {
-                System.exit(0);
+            if(estVictoire()) {
+                afficherMenu(fenetre, clavier, true);
+                restart();
+            }
+
+            if(estPartieFinie()) {
+                afficherMenu(fenetre, clavier, false);
+                restart();
             }
 
             fenetre.effacer();
             dessinerGrille(fenetre);
             fenetre.rafraichir();
 
-            try {
-                Thread.sleep(80);
-            } catch(Exception e) {}
+            try { Thread.sleep(80); } catch(Exception e) {}
         }
     }
 
+    // 🎮 MENU FIN
+    private void afficherMenu(FenetrePleinEcran fenetre, ClavierBorneArcade clavier, boolean victoire) {
+
+        choixMenu = 0;
+
+        while(true) {
+
+            fenetre.effacer();
+
+            // fond
+            Rectangle fond = new Rectangle(
+                victoire ? new Couleur(255,215,0) : new Couleur(50,50,50),
+                new Point(0,0),
+                fenetre.getWidth(),
+                fenetre.getHeight(),
+                true
+            );
+            fenetre.ajouter(fond);
+
+            // titre
+            Texte titre = new Texte(
+                victoire ? Couleur.NOIR : Couleur.ROUGE,
+                victoire ? "VICTOIRE !" : "GAME OVER",
+                new Font("Arial", Font.BOLD, 80),
+                new Point(fenetre.getWidth()/2 - 250, fenetre.getHeight()/2 - 150)
+            );
+
+            Texte scoreTxt = new Texte(
+                victoire ? Couleur.NOIR : Couleur.BLANC,
+                "Score : " + score,
+                new Font("Arial", Font.BOLD, 50),
+                new Point(fenetre.getWidth()/2 - 150, fenetre.getHeight()/2 - 50)
+            );
+
+            // positions boutons
+            int bx = fenetre.getWidth()/2 - 150;
+            int by1 = fenetre.getHeight()/2 + 50;
+            int by2 = fenetre.getHeight()/2 + 150;
+
+            // 🔄 bouton restart
+            Rectangle b1 = new Rectangle(
+                choixMenu == 0 ? Couleur.NOIR : Couleur.BLANC,
+                new Point(bx, by1),
+                300, 80,
+                choixMenu == 0
+            );
+
+            Texte t1 = new Texte(
+                choixMenu == 0 ? Couleur.BLANC : Couleur.NOIR,
+                "RESTART",
+                new Font("Arial", Font.BOLD, 30),
+                new Point(bx + 80, by1 + 50)
+            );
+
+            Rectangle b2 = new Rectangle(
+                choixMenu == 1 ? Couleur.NOIR : Couleur.BLANC,
+                new Point(bx, by2),
+                300, 80,
+                choixMenu == 1
+            );
+
+            Texte t2 = new Texte(
+                choixMenu == 1 ? Couleur.BLANC : Couleur.NOIR,
+                "QUITTER",
+                new Font("Arial", Font.BOLD, 30),
+                new Point(bx + 80, by2 + 50)
+            );
+
+            fenetre.ajouter(titre);
+            fenetre.ajouter(scoreTxt);
+            fenetre.ajouter(b1);
+            fenetre.ajouter(t1);
+            fenetre.ajouter(b2);
+            fenetre.ajouter(t2);
+
+            fenetre.rafraichir();
+
+            // 🎮 navigation
+            if(clavier.getJoyJ1HautTape() || clavier.getJoyJ1BasTape()) {
+                choixMenu = 1 - choixMenu; // switch 0 <-> 1
+            }
+
+            // 🎮 validation
+            if(clavier.getBoutonJ1ZTape()) {
+                if(choixMenu == 0) {
+                    fenetre.fermer();
+                    new Jeu2048();
+                } else {
+                    System.exit(0);
+                }
+            }
+
+            try { Thread.sleep(120); } catch(Exception e) {}
+        }
+    }
+
+    private void restart() {
+        grille = new int[4][4];
+        score = 0;
+        ajouterCase();
+        ajouterCase();
+    }
 
     private void ajouterCase() {
         while(true) {
@@ -62,7 +171,6 @@ public class Jeu2048 {
             }
         }
     }
-
 
     private boolean moveLeft() {
         boolean moved = false;
@@ -83,6 +191,7 @@ public class Jeu2048 {
             for(int j = 0; j < 3; j++) {
                 if(newRow[j] == newRow[j+1] && newRow[j] != 0) {
                     newRow[j] *= 2;
+                    score += newRow[j];
                     newRow[j+1] = 0;
                 }
             }
@@ -106,14 +215,12 @@ public class Jeu2048 {
         return moved;
     }
 
-
     private boolean moveRight() {
         reverse();
         boolean moved = moveLeft();
         reverse();
         return moved;
     }
-
 
     private boolean moveUp() {
         transpose();
@@ -149,84 +256,84 @@ public class Jeu2048 {
         }
     }
 
-    public Couleur chooseCouleur(int nombre) {
-        Couleur couleur;
-        switch (nombre) {
-            case 2:
-                couleur = new Couleur(238, 228, 218); 
-                break;
-            case 4:
-                couleur = new Couleur(237, 224, 200); 
-                break;
-            case 8:
-                couleur = new Couleur(242, 177, 121); 
-                break;
-            case 16:
-                couleur = new Couleur(245, 149, 99); 
-                break;
-            case 32:
-                couleur = new Couleur(246, 124, 95); 
-                break;
-            case 64:
-                couleur = new Couleur(246, 94, 59); 
-                break;
-            case 128:
-                couleur = new Couleur(237, 207, 114); 
-                break;
-            case 256:
-                couleur = new Couleur(237, 204, 97); 
-                break;
-            case 512:
-                couleur = new Couleur(237, 200, 80); 
-                break;
-            case 1024:
-                couleur = new Couleur(237, 197, 63); 
-                break;
-            case 2048:
-                couleur = new Couleur(237, 194, 46); 
-                break;
-            default:
-                couleur = Couleur.BLANC; 
-                break;
+    private boolean estVictoire() {
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                if(grille[i][j] == 2048) return true;
+            }
         }
-        return couleur;
+        return false;
+    }
+
+    private boolean estPartieFinie() {
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                if(grille[i][j] == 0) return false;
+            }
+        }
+
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                if(i < 3 && grille[i][j] == grille[i+1][j]) return false;
+                if(j < 3 && grille[i][j] == grille[i][j+1]) return false;
+            }
+        }
+
+        return true;
+    }
+
+    public Couleur chooseCouleur(int nombre) {
+        switch (nombre) {
+            case 2: return new Couleur(238,228,218);
+            case 4: return new Couleur(237,224,200);
+            case 8: return new Couleur(242,177,121);
+            case 16: return new Couleur(245,149,99);
+            case 32: return new Couleur(246,124,95);
+            case 64: return new Couleur(246,94,59);
+            case 128: return new Couleur(237,207,114);
+            case 256: return new Couleur(237,204,97);
+            case 512: return new Couleur(237,200,80);
+            case 1024: return new Couleur(237,197,63);
+            case 2048: return new Couleur(237,194,46);
+            default: return Couleur.BLANC;
+        }
     }
 
     private void dessinerGrille(FenetrePleinEcran f) {
 
         int largeur = f.getWidth();
         int hauteur = f.getHeight();
-    
+
         int tailleGrille = Math.min(largeur, hauteur) - 100;
         int tailleCase = tailleGrille / 4;
-    
+
         int offsetX = (largeur - tailleGrille) / 2;
         int offsetY = (hauteur - tailleGrille) / 2;
-    
+
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 4; j++) {
-    
+
                 int x = offsetX + j * tailleCase;
                 int y = offsetY + i * tailleCase;
-    
+
                 Rectangle r = new Rectangle(
-                    chooseCouleur(grille[i][j]), 
+                    chooseCouleur(grille[i][j]),
                     new Point(x, y),
                     tailleCase,
                     tailleCase,
-                    true 
+                    true
                 );
                 f.ajouter(r);
-    
+
                 Rectangle contour = new Rectangle(
-                    Couleur.NOIR, 
+                    Couleur.NOIR,
                     new Point(x, y),
                     tailleCase,
                     tailleCase,
-                    false 
+                    false
                 );
                 f.ajouter(contour);
-    
+
                 if(grille[i][j] != 0) {
                     Texte t = new Texte(
                         Couleur.NOIR,
@@ -238,8 +345,15 @@ public class Jeu2048 {
                 }
             }
         }
-    }
 
+        Texte scoreText = new Texte(
+            Couleur.NOIR,
+            "Score : " + score,
+            new Font("Arial", Font.BOLD, 40),
+            new Point(1800, 1180)
+        );
+        f.ajouter(scoreText);
+    }
     public static void main(String[] args) {
         new Jeu2048();
     }
