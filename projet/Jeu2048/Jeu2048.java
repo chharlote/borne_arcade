@@ -1,13 +1,16 @@
 import MG2D.*;
+import MG2D.audio.Bruitage;
 import MG2D.geometrie.*;
 import java.awt.Font;
 import java.util.Random;
+import MG2D.audio.*;
 
 public class Jeu2048 {
 
     private int[][] grille = new int[4][4];
     private Random random = new Random();
     private int score = 0;
+    private Musique musique;
 
     private int choixMenu = 0; 
 
@@ -18,10 +21,12 @@ public class Jeu2048 {
         ClavierBorneArcade clavier = new ClavierBorneArcade();
         fenetre.addKeyListener(clavier);
 
+        musique = new Musique("son/son_2048.mp3");
+        musique.start();
+
         restart();
 
         while(true) {
-
             if(clavier.getJoyJ1GaucheTape()) {
                 if(moveLeft()) ajouterCase();
             }
