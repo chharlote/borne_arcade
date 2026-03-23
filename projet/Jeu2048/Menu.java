@@ -6,73 +6,80 @@ public class Menu {
 
     private FenetrePleinEcran fenetre;
     private ClavierBorneArcade clavier;
-    private Bouton[] boutons;
-    private int selection; 
+    private int choixMenu; 
 
     public Menu() {
-        fenetre = new FenetrePleinEcran("Menu 2048");
+        fenetre = new FenetrePleinEcran("2048 - Menu");
         clavier = new ClavierBorneArcade();
         fenetre.addKeyListener(clavier);
 
-        // Créer  boutons
-        boutons = new Bouton[2];
-
-        boutons[0] = new Bouton(
-            new Texte(Couleur.NOIR, "Lancer le jeu", new Font("Arial", Font.BOLD, 40), new Point(400, 300)),
-            new Texture("assets/img/bouton2.png", new Point(300, 280), 400, 65),
-            "Lancer le jeu"
-        );
-
-        boutons[1] = new Bouton(
-            new Texte(Couleur.NOIR, "Quitter", new Font("Arial", Font.BOLD, 40), new Point(400, 180)),
-            new Texture("assets/img/bouton2.png", new Point(300, 160), 400, 65),
-            "Quitter"
-        );
-
-        selection = 0;
-
+        choixMenu = 0; 
         boucleMenu();
     }
 
     private void boucleMenu() {
         while(true) {
-            if(clavier.getJoyJ1HautTape()) {
-                selection--;
-                if(selection < 0) selection = boutons.length - 1;
-            }
-            if(clavier.getJoyJ1BasTape()) {
-                selection++;
-                if(selection >= boutons.length) selection = 0;
+            int largeurFen = fenetre.getWidth();
+            int hauteurFen = fenetre.getHeight();
+
+            int rectWidth = 400;
+            int rectHeight = 80;
+            int cx = largeurFen / 2;
+            int cy = hauteurFen / 2;
+            
+            int bx = cx - rectWidth / 2;
+            
+            int titreY = cy + 200; 
+            int by1 = cy + 30;     
+            int by2 = cy - 90;     
+
+            fenetre.effacer();
+
+            Texte titre = new Texte(
+                Couleur.NOIR,
+                "2048",
+                new Font("Arial", Font.BOLD, 100),
+                new Point(cx, titreY) 
+            );
+
+            Rectangle b1 = new Rectangle(choixMenu == 0 ? new Couleur(238,228,218) : new Couleur(200,200,200), new Point(bx, by1), rectWidth, rectHeight, true);
+            Texte t1 = new Texte(
+                Couleur.NOIR,
+                "LANCER LE JEU",
+                new Font("Arial", Font.BOLD, 40),
+                new Point(cx, by1 + 25) 
+            );
+            Rectangle b2 = new Rectangle(choixMenu == 1 ? new Couleur(238,228,218) : new Couleur(200,200,200), new Point(bx, by2), rectWidth, rectHeight, true);
+            Texte t2 = new Texte(
+                Couleur.NOIR,
+                "QUITTER",
+                new Font("Arial", Font.BOLD, 40),
+                new Point(cx , by2 + 25) 
+            );
+            fenetre.ajouter(titre);
+            fenetre.ajouter(b1);
+            fenetre.ajouter(t1); 
+            fenetre.ajouter(b2);
+            fenetre.ajouter(t2);
+
+            fenetre.rafraichir();
+
+            if(clavier.getJoyJ1HautTape() || clavier.getJoyJ1BasTape()) {
+                choixMenu = 1 - choixMenu; 
             }
 
             if(clavier.getBoutonJ1ATape()) {
-                if(selection == 0) { 
+                if(choixMenu == 0) { 
                     fenetre.fermer();
-                    new Jeu2048(); 
+                    new Jeu2048();
+                    System.out.println("Lancement du jeu...");
                     return;
-                } else if(selection == 1) { 
+                } else { 
                     System.exit(0);
                 }
             }
 
-            fenetre.effacer();
-
-            for(int i = 0; i < boutons.length; i++) {
-                // Changer la couleur du texte selon la sélection
-                if(i == selection) {
-                    boutons[i].getTexte().setCouleur(Couleur.ROUGE);
-                } else {
-                    boutons[i].getTexte().setCouleur(Couleur.NOIR);
-                }
-                fenetre.ajouter(boutons[i].getTexture());
-                fenetre.ajouter(boutons[i].getTexte());
-            }
-
-            fenetre.rafraichir();
-
-            try {
-                Thread.sleep(100);
-            } catch(Exception e) {}
+            try { Thread.sleep(100); } catch(Exception e) {}
         }
     }
 
