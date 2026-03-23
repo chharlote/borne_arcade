@@ -184,7 +184,7 @@ public class Jeu2048 {
 
             for(int j = 0; j < 4; j++) {
                 if(grille[i][j] != 0) {
-                    newRow[index++] = grille[i][j];
+                    newRow[index++] = grille[i][j];;
                 }
             }
 
@@ -354,6 +354,7 @@ public class Jeu2048 {
         );
         f.ajouter(scoreText);
     }
+
     public static void main(String[] args) {
         new Jeu2048();
     }
