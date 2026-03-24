@@ -2,6 +2,7 @@ import MG2D.*;
 import MG2D.geometrie.*;
 import java.awt.Font;
 
+// Menu de Jeu2048
 public class Menu {
 
     private FenetrePleinEcran fenetre;
@@ -17,6 +18,7 @@ public class Menu {
         boucleMenu();
     }
 
+    // Affichage du menu 
     private void boucleMenu() {
         while(true) {
             int largeurFen = fenetre.getWidth();
@@ -35,6 +37,7 @@ public class Menu {
 
             fenetre.effacer();
 
+            // Choix possibles
             Texte titre = new Texte(
                 Couleur.NOIR,
                 "2048",
@@ -64,6 +67,7 @@ public class Menu {
 
             fenetre.rafraichir();
 
+            // Choix effectué
             if(clavier.getJoyJ1HautTape() || clavier.getJoyJ1BasTape()) {
                 choixMenu = 1 - choixMenu; 
             }

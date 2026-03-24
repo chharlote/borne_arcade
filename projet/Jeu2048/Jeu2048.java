@@ -14,19 +14,23 @@ public class Jeu2048 {
 
     private int choixMenu = 0; 
 
+    // Classe du Jeu 2048
     public Jeu2048() {
+    
 
         FenetrePleinEcran fenetre = new FenetrePleinEcran("2048");
 
         ClavierBorneArcade clavier = new ClavierBorneArcade();
         fenetre.addKeyListener(clavier);
 
-        musique = new Musique("son/son_2048.mp3");
+        musique = new Musique("assets/son/son_2048.mp3");
         musique.start();
 
         restart();
 
         while(true) {
+
+            // Commandes
             if(clavier.getJoyJ1GaucheTape()) {
                 if(moveLeft()) ajouterCase();
             }
@@ -53,6 +57,7 @@ public class Jeu2048 {
                 restart();
             }
 
+            // AFfichage jeu
             fenetre.effacer();
             dessinerGrille(fenetre);
             fenetre.rafraichir();
@@ -61,6 +66,7 @@ public class Jeu2048 {
         }
     }
 
+    // AFfichge du menu du jeu
     private void afficherMenu(FenetrePleinEcran fenetre, ClavierBorneArcade clavier, boolean victoire) {
 
         choixMenu = 0;
@@ -143,6 +149,7 @@ public class Jeu2048 {
         }
     }
 
+    // SUppression du jeu actuelle pour un nouveau
     private void restart() {
         grille = new int[4][4];
         score = 0;
@@ -150,6 +157,7 @@ public class Jeu2048 {
         ajouterCase();
     }
 
+    // utilistaire qui crée les cases de la grilles
     private void ajouterCase() {
         while(true) {
             int i = random.nextInt(4);
@@ -162,6 +170,8 @@ public class Jeu2048 {
         }
     }
 
+    // Mouvement vers la gauche (flèche gauche)
+    // Calcul du socre et des ajouts des cases ensembles
     private boolean moveLeft() {
         boolean moved = false;
 
@@ -205,6 +215,8 @@ public class Jeu2048 {
         return moved;
     }
 
+    // Mouvement droit
+    // Utilise la fonction moveLeft mais de façon inverse
     private boolean moveRight() {
         reverse();
         boolean moved = moveLeft();
@@ -212,6 +224,9 @@ public class Jeu2048 {
         return moved;
     }
 
+
+    // Mouvement droit
+    // Utilise la fonction moveRight mais de façon trensposée
     private boolean moveUp() {
         transpose();
         boolean moved = moveRight();
@@ -219,6 +234,8 @@ public class Jeu2048 {
         return moved;
     }
 
+    // Mouvement droit
+    // Utilise la fonction moveLeft mais de façon trensposée
     private boolean moveDown() {
         transpose();
         boolean moved = moveLeft();
@@ -226,6 +243,7 @@ public class Jeu2048 {
         return moved;
     }
 
+    // INversion de la grille
     private void reverse() {
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 2; j++) {
@@ -236,6 +254,7 @@ public class Jeu2048 {
         }
     }
 
+    // TRansposition de la grille
     private void transpose() {
         for(int i = 0; i < 4; i++) {
             for(int j = i; j < 4; j++) {
@@ -246,6 +265,7 @@ public class Jeu2048 {
         }
     }
 
+    // Victoire 
     private boolean estVictoire() {
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 4; j++) {
@@ -255,6 +275,8 @@ public class Jeu2048 {
         return false;
     }
 
+
+    // Vérification si le joueur est bloqué
     private boolean estPartieFinie() {
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 4; j++) {
@@ -272,6 +294,7 @@ public class Jeu2048 {
         return true;
     }
 
+    // CHoisi la couelur de la case en focntion de la valeur
     public Couleur chooseCouleur(int nombre) {
         switch (nombre) {
             case 2: return new Couleur(238,228,218);
@@ -289,6 +312,8 @@ public class Jeu2048 {
         }
     }
 
+
+    // Dessine la grille par rapport à l'écran
     private void dessinerGrille(FenetrePleinEcran f) {
 
         int largeur = f.getWidth();
